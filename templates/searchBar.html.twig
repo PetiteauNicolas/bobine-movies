@@ -1,0 +1,49 @@
+<div class="sortForm">
+    <form method="GET" novalidate id="sortForm">
+        <h2></h2>
+        <div class="form-row">
+            <div class="searchBarContainer">
+            <form class="" action="{{ path('film_list') }}">
+                <input
+                        type="search"
+                        name="q"
+                        value="{{ app.request.query.get('q') }}"
+                        class="searchBar"
+                        placeholder="Rechercher un film, série...."
+                        aria-label="Search">
+            </form>
+            </div>
+              <label for="genre"></label><select id="genre" name="genre" class="form-control-sort">
+                <option value="">Genre (tous)</option>
+                {% for genre in genres %}
+                    <option value="{{ genre.id }}">{{ genre.nom }}</option>
+                {% endfor %}
+            </select>
+            <label for="realisateur"></label><select id="realisateur" name="realisateur" class="form-control-sort">
+                <option value="">Réalisateur (tous)</option>
+                {% for realisateur in realisateurs %}
+                    <option value="{{ realisateur.id }}">{{ realisateur.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="acteur"></label><select id="acteur" name="acteur" class="form-control-sort">
+                <option value="">Acteur (tous)</option>
+                {% for acteur in acteurs %}
+                    <option value="{{ acteur.id }}">{{ acteur.nom }}</option>
+                {% endfor %}
+            </select>
+            {# <label for="pays"></label><select id="pays" name="pays" class="form-control-sort">
+                <option value="">Pays (toutes)</option>
+            </select>
+            <label for="annee"></label><select id="annee" name="annee" class="form-control-sort">
+                <option value="">Année (toutes)</option>
+            </select>
+            <label for="note"></label><select id="note" name="note" class="form-control-sort">
+                <option value="">Note (toutes)</option>
+            </select> #}
+            <div class="col_submit">
+                <button type="submit" class="form-control-submit">Trier</button>
+            </div>
+        </div>
+        <h2></h2>
+    </form>
+</div>

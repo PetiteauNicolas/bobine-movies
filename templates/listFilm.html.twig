@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List{% endblock %}
+
+{% block body %}
+    <div class="logo">
+        <img src="{{ asset('assets/image/bobine.png') }}" class="logo-img-resp" alt="">
+    </div>
+    <div class="container">
+        <div class="title-carrousel">Prochaine sortie</div>
+
+        {% set upcomingFilms = [] %}
+        {% for film in films %}
+            {% if film.dateDeSortie is not null and film.dateDeSortie|date('Y-m-d') > "now"|date('Y-m-d') %}
+                {% set upcomingFilms = upcomingFilms|merge([film]) %}
+            {% endif %}
+        {% endfor %}
+        {% set sortedUpcomingFilms = upcomingFilms|sort((a, b) => a.dateDeSortie <=> b.dateDeSortie) %}
+        {% for film in sortedUpcomingFilms %}
+        <div class="card-carrousel">
+
+
+                    <div class="film-date-carrousel"> {{ film.dateDeSortie ? film.dateDeSortie|date('d F Y') : ''}} </div>
+                    <div class="jaquette-container-carrousel">
+                        <a href="{{ path('film_detail', {'id': film.id}) }}" title="Détails du film">
+                            <img src="{{ asset('assets/jaquette/' ~ film.jaquette) }}" alt="{{ film.name }}" class="film-jaquette-carrousel">
+                        </a>
+                        <div class="calque-jaquette-carrousel">
+                            <div class="film-name-carrousel">{{ film.name }}</div>
+                        </div>
+                    </div>
+                    <div class="container-star-and-note-carrousel">
+                        <img src="{{ asset('assets/image/goodstar.png') }}" class="film-star-carrousel" alt="">
+                        <div class="film-note-spectateur-carrousel">
+                            {{ film.noteSpectateur }}
+                        </div>
+                    </div>
+                    <div class="container-film-genre-carrousel">
+                        {% for i in film.genre %}
+                            <div class="film-genre-carrousel">{{ i.nom }}</div>
+                            {% if not loop.last %}/{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <div class="title-carrousel">Mes favoris</div>
+        {% set favoriteFilms = [] %}
+        {% for film in films %}
+            {% if film.favoris %}
+                {% set favoriteFilms = favoriteFilms|merge([film]) %}
+            {% endif %}
+        {% endfor %}
+
+        {% set sortedFavoriteFilms = favoriteFilms|sort((a, b) => b.noteSpectateur <=> a.noteSpectateur) %}
+
+        {% for film in sortedFavoriteFilms %}
+            <div class="card-carrousel">
+                <div class="jaquette-container-carrousel">
+                    <a href="{{ path('film_detail', {'id': film.id}) }}" title="Détails du film">
+                        <img src="{{ asset('assets/jaquette/' ~ film.jaquette) }}" alt="{{ film.name }}" class="film-jaquette-carrousel">
+                    </a>
+                    <div class="calque-jaquette-carrousel">
+                        <div class="film-name-carrousel">{{ film.name }}</div>
+                    </div>
+                </div>
+                <div class="container-star-and-note-carrousel">
+                    <img src="{{ asset('assets/image/goodstar.png') }}" class="film-star-carrousel" alt="">
+                    <div class="film-note-spectateur-carrousel">
+                        {{ film.noteSpectateur }}
+                    </div>
+                </div>
+
+                <div class="container-film-genre-carrousel">
+                    {% for i in film.genre %}
+                        <div class="film-genre-carrousel">{{ i.nom }}</div>
+                        {% if not loop.last %}/{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include('searchBar.html.twig') %}
+
+    <div class="list">
+        <section class="film-list">
+            {% for film in films %}
+                <div class="card-list">
+                    <div class="jaquette-container-list">
+                        <a href="{{ path('film_detail', {'id': film.id}) }}" title="Détails du film">
+                            <img src="{{ asset('assets/jaquette/' ~ film.jaquette) }}" alt="{{ film.name }}" class="film-jaquette-list">
+                        </a>
+                        <div class="calque-jaquette-list">
+                            <div class="details-list">
+                                <div class="film-name-list">{{ film.name }}</div>
+
+                                {% for i in film.realisateur %}
+                                    <div class="film-realisateur-list">{{ i.name }}</div>
+                                {% endfor %}
+
+                                <div class="film-date-list"> {{ film.dateDeSortie ? film.dateDeSortie|date('Y') : ''}} </div>
+
+                                <div class="container-film-genre-list">
+                                    {% for i in film.genre %}
+                                        <div class="film-genre-list">{{ i.nom }}</div>
+                                        {% if not loop.last %} / {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="submit-details-list">
+                                    <button type="submit" class="submit-details">Détails</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock %}

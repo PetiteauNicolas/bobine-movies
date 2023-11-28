@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ film.name }} | {{ parent() }}
+{% endblock %}
+
+{% block body%}
+
+    <div class="film-detail">
+
+        {% if film.vu == true  %}
+            <img src="{{ asset('assets/image/vu.png') }}" class="film-vu" alt="">
+        {% endif %}
+
+        <h1 class="film-name">{{ film.name }}</h1>
+
+        {% for i in film.genre %}
+            <a class="film-genre">{{ i.nom }}</a>
+        {% endfor %}
+
+        <div>
+            <img class="film-jaquette" src="{{ asset('Assets/Jaquette/' ~ film.jaquette) }}" alt="{{ film.name }}">
+        </div>
+
+        <a class="film-synopsis">{{ film.synopsis }}</a>
+
+        <a class="film-avertissement"> Avertissement : {{ film.avertissement }}</a>
+
+        <a class="film-duree"> Durée: {{ film.duree ? film.duree|date('H:i') : '' }} </a>
+
+        <a class="film-date"> Date de sortie: {{ film.dateDeSortie ? film.dateDeSortie|date('d F Y') : '' }} </a>
+
+        {% for i in film.realisateur %}
+            <a class="film-real">realisateur: {{ i.name }}</a>
+        {% endfor %}
+
+        {% for i in film.acteur %}
+            <a class="film-acteur">Acteur: {{ i.nom }}</a>
+        {% endfor %}
+
+        <div class="film-note">
+            {% if film.noteSpectateur is not null %}
+                <div>Note spectateur :</div>
+                {% set fullStars = film.noteSpectateur | round(0, 'floor') %}
+                {% set halfStar = (film.noteSpectateur - fullStars) == 0.5 %}
+                {% for i in range(0, 4) %}
+                    {% if i < fullStars %}
+                        <img src="{{ asset('assets/image/goodStar.png') }}" class="star" alt="">
+                    {% elseif i == fullStars and halfStar %}
+                        <img src="{{ asset('assets/image/miStar.png') }}" class="star" alt="">
+                    {% else %}
+                        <img src="{{ asset('assets/image/badStar.png') }}" class="star" alt="">
+                    {% endif %}
+                {% endfor %}
+                <div class="film-notes">
+                    {{ film.noteSpectateur }}
+                </div>
+            {% else %}
+                <div>Note spectateur : Non noté</div>
+            {% endif %}
+        </div>
+        <div class="film-note">
+            {% if film.note is not null %}
+                <div>Ma note :</div>
+                {% set fullStars = film.note | round(0, 'floor') %}
+                {% set halfStar = (film.note - fullStars) == 0.5 %}
+
+                {% for i in range(0, 4) %}
+                    {% if i < fullStars %}
+                        <img src="{{ asset('assets/image/goodStar.png') }}" class="star" alt="">
+                    {% elseif i == fullStars and halfStar %}
+                        <img src="{{ asset('assets/image/miStar.png') }}" class="star" alt="">
+                    {% elseif i == fullStars and not halfStar %}
+                        <img src="{{ asset('assets/image/badStar.png') }}" class="star" alt="">
+                    {% else %}
+                        <img src="{{ asset('assets/image/badStar.png') }}" class="star" alt="">
+                    {% endif %}
+                {% endfor %}
+                <div class="film-notes">
+                    {{ film.note }}
+                </div>
+            {% else %}
+                <div>Ma note : Non noté</div>
+            {% endif %}
+        </div>
+        <a class="film-ba" href="{{ film.bandeAnnonce }}">Bande annonce: {{ film.bandeAnnonce }} </a>
+
+        <div class="film-btn">
+            <a href="{{ path('film_update', {'id':film.id}) }}" class="film-modifier">Modifier</a>
+            <a href="{{ path('film_delete', {'id':film.id}) }}" class="film-delete">Supprimer</a>
+        </div>
+    </div>
+{% endblock %}
+
+{# Mettre fond écran sur details films #}
+{% block extrastyles %}
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("{{ asset('assets/jaquette/' ~ film.wallpaper) }}");
+            background-attachment: fixed;
+            background-size: cover; /* Ajustement pour rendre l'image de fond responsive */
+            background-position: center; /* Centre l'image de fond */
+            height: 100vh; /* Assure que l'image de fond couvre toute la hauteur de la fenêtre */
+            margin: 0; /* Supprime la marge par défaut du corps */
+        }
+    </style>
+{% endblock %}

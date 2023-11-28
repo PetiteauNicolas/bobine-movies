@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ asset('style.css') }}" />
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Lato:wght@300&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block extrastyles %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            {% include('navbar.html.twig') %}
+        </header>
+        <section>
+            {% block body %}{% endblock %}
+        </section>
+        <footer>
+        </footer>
+    </body>
+    <script>
+        const menuHamburger = document.querySelector(".menu-hamburger")
+        const navLinks = document.querySelector(".nav-links")
+
+        menuHamburger.addEventListener('click', ()=> {
+            navLinks.classList.toggle('mobile-menu')
+        })
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérez la balise de formulaire
+            var sortForm = document.getElementById('sortForm');
+
+            // Ajoutez un gestionnaire d'événements pour le soumission du formulaire
+            sortForm.addEventListener('submit', function() {
+                // Stockez la position de défilement actuelle dans sessionStorage
+                sessionStorage.setItem('scrollPosition', window.scrollY);
+            });
+
+            // Restaurez la position de défilement si elle existe dans sessionStorage
+            var storedScrollPosition = sessionStorage.getItem('scrollPosition');
+            if (storedScrollPosition) {
+                window.scrollTo(0, storedScrollPosition);
+                // Effacez la position de défilement stockée après utilisation
+                sessionStorage.removeItem('scrollPosition');
+            }
+        });
+    </script>
+    {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+</html>

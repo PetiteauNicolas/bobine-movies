@@ -1,0 +1,50 @@
+<nav class="navbar">
+    <div class="nav-links">
+        <ul>
+            <li class="logo-container" >
+                <img src="{{ asset('assets/image/bobine.png') }}" alt="" class="logo-img">
+            </li>
+            {#  <li class="" >
+                <a class="" href="{{ path('film_list') }}">Accueil</a>
+            </li>
+            #}
+            <li class="accueil" >
+                <a class="accueil" href="{{ path('film_list') }}">Accueil</a>
+            </li>
+            <li class="" >
+                <a class="" href="{{ path('film_add') }}">Films</a>
+            </li>
+            <li class="">
+                <a class="" href="{{ path('acteur_add') }}">Acteurs</a>
+            </li>
+            <li class="">
+                <a class="" href="{{ path('realisateur_add') }}">Réalisateurs</a>
+            </li>
+            {% if is_granted ('IS_AUTHENTICATED_FULLY')  %}
+                <li class="">
+                    <a class="" href="{{ path('user_details', {'id':app.user.id}) }}">Profil</a>
+                </li>
+            {% else %}
+
+                <li>
+                    <a class="" href="{{ path('user_add') }}">Se créer un compte</a>
+                </li>
+            {% endif %}
+
+            {#  {% if is_granted ('IS_AUTHENTICATED_FULLY')  %}
+                <li class="">
+                    <a class="" href="{{ path('user_details', {'id':app.user.id}) }}">Profil</a>
+                </li>
+            {% else %}
+
+
+                <li>
+                    <a class="" href="{{ path('user_add') }}">Se créer un compte</a>
+                </li>
+            {% endif %}
+            #}
+
+        </ul>
+    </div>
+    <img src="{{ asset('assets/image/menu_burger.png') }}" class="menu-hamburger centered-menu" alt="menu hamburger">
+</nav>
